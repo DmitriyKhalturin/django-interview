@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-    'interview.apps.topic.apps.TopicConfig',
-    'interview.apps.question.apps.QuestionConfig',
-    'interview.apps.answer.apps.AnswerConfig',
-    'interview.apps.user_answer.apps.UserAnswerConfig',
+    'interview.apps.topics.apps.TopicConfig',
+    'interview.apps.questions.apps.QuestionConfig',
+    'interview.apps.answers.apps.AnswerConfig',
+    'interview.apps.user-answers.apps.UserAnswerConfig',
 ]
 
 MIDDLEWARE = [

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class QuestionConfig(AppConfig):
-    name = 'interview.apps.question'
+    name = 'interview.apps.questions'

@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class TopicConfig(AppConfig):
-    name = 'interview.apps.topic'
+    name = 'interview.apps.topics'
