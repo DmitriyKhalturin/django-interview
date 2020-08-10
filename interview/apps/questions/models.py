@@ -6,10 +6,14 @@ from interview.apps.topics.models import Topic
 
 class Question(models.Model):
 
+    CUSTOM_OPTION = 'CUSTOM'
+    ONE_OPTION = 'ONE'
+    MULTIPLE_OPTION = 'MULTIPLE'
+
     TYPE_OPTION = (
-        ('CUSTOM', 'custom',),
-        ('ONE', 'one',),
-        ('MULTIPLE', 'multiple',),
+        (CUSTOM_OPTION, 'custom',),
+        (ONE_OPTION, 'one',),
+        (MULTIPLE_OPTION, 'multiple',),
     )
 
     id = models.AutoField(primary_key=True)

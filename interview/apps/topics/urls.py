@@ -1,11 +1,11 @@
 from django.urls import path
 
-from common.drf.routers import path_with_actions
+from common.django_rest_framework.routers import path_with_actions
 from . import views
 from .views import TopicViewSet
 
 app_name = 'topics'
 urlpatterns = [
-    path(r'users/', views.get_users_topics, name='users_topics'),
+    path(r'users/', views.get_users_topics, name='topics-users-list'),
     path_with_actions(r'', TopicViewSet, 'topics'),
 ]

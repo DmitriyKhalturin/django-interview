@@ -1,4 +1,4 @@
-from common.drf.routers import path_with_actions
+from common.django_rest_framework.routers import path_with_actions
 from .views import UserAnswersViewSet
 
 app_name = 'user_answers'

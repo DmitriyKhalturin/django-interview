@@ -1,3 +1,17 @@
-from django.shortcuts import render
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAdminUser
+from rest_framework.viewsets import ViewSet
 
-# Create your views here.
+
+class AnswerViewSet(ViewSet):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAdminUser,)
+
+    def create(self, request):
+        pass
+
+    def update(self, request, pk):
+        pass
+
+    def destroy(self, request, pk):
+        pass
