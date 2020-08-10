@@ -43,7 +43,7 @@ class TopicViewSet(ViewSet):
 
     def destroy(self, request, pk):
         try:
-            topic = get_object_or_404(Topic, id=pk)
+            topic = get_object_or_404(Topic, pk=pk)
             topic.delete()
             return Response(status=status.HTTP_200_OK)
         except ProtectedError:

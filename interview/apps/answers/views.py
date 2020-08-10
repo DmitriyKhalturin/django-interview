@@ -7,9 +7,6 @@ class AnswerViewSet(ViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminUser,)
 
-    def create(self, request):
-        pass
-
     def update(self, request, pk):
         pass
 

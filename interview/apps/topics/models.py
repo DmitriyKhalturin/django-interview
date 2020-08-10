@@ -11,12 +11,16 @@ class Topic(models.Model):
 
 
 class TopicSerializer(serializers.ModelSerializer):
+    from interview.apps.questions.models import QuestionSerializer
+
+    questions = QuestionSerializer(many=True, read_only=True, allow_null=True)
+
     class Meta:
         model = Topic
-        fields = ('id', 'title', 'start_date', 'finish_date', 'description')
+        fields = ('id', 'title', 'start_date', 'finish_date', 'description', 'questions')
 
     def update(self, instance, validated_data):
         if validated_data.get('start_date', None) is not None:
-            raise serializers.ValidationError('Field \'start_date\' can\'t be modified')
+            raise serializers.ValidationError('Field \'start_date\' can\'t be modified.')
         else:
             return super().update(instance, validated_data)
