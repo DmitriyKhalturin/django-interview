@@ -12,7 +12,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
         path(r'topics/', include('interview.apps.topics.urls')),
         path(r'questions/', include('interview.apps.questions.urls')),
         path(r'answers/', include('interview.apps.answers.urls')),
-        path(r'user-answers/', include('interview.apps.user_answers.urls')),
+        path(r'users-answers/', include('interview.apps.users_answers.urls')),
     ]
 
     def test_api_methods(self):

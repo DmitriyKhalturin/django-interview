@@ -22,5 +22,5 @@ urlpatterns = [
     path(r'auth-token/', views.obtain_auth_token),
     path(r'topics/', include('interview.apps.topics.urls')),
     path(r'questions/', include('interview.apps.questions.urls')),
-    path(r'user-answers/', include('interview.apps.user_answers.urls')),
+    path(r'users-answers/', include('interview.apps.users_answers.urls')),
 ]

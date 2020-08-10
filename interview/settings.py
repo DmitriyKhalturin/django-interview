@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'interview.apps.topics.apps.TopicConfig',
     'interview.apps.questions.apps.QuestionConfig',
     'interview.apps.answers.apps.AnswerConfig',
-    'interview.apps.user_answers.apps.UserAnswerConfig',
+    'interview.apps.users_answers.apps.UserAnswerConfig',
 ]
 
 MIDDLEWARE = [
