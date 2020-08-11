@@ -17,7 +17,7 @@ class TopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Topic
-        fields = ('id', 'title', 'start_date', 'finish_date', 'description', 'questions')
+        fields = ('id', 'title', 'start_date', 'finish_date', 'description', 'questions',)
 
     def update(self, instance, validated_data):
         if validated_data.get('start_date', None) is not None:

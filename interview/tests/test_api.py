@@ -57,7 +57,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
         response = self.client.put(
             reverse('topics:topics-detail', args=[topic_1_id]),
             data={
-                'description': value_update_field
+                'description': value_update_field,
             },
             format='json'
         )
@@ -73,7 +73,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
         response = self.client.put(
             reverse('topics:topics-detail', args=[topic_1_id]),
             data={
-                'start_date': '2020-08-11'
+                'start_date': '2020-08-11',
             },
             format='json'
         )
@@ -97,7 +97,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
                     'One answer.',
                     'Two answer.',
                     'Three answer.',
-                ]
+                ],
             },
             format='json'
         )
@@ -112,7 +112,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
                 'text': 'Question #2.',
                 'type': Question.MULTIPLE_OPTION,
                 'topic_id': topic_1_id,
-                'answers': []
+                'answers': [],
             },
             format='json'
         )
@@ -128,7 +128,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
                     'One answer.',
                     'Two answer.',
                     'Three answer.',
-                ]
+                ],
             },
             format='json'
         )
@@ -155,7 +155,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
                     'One answer.',
                     'Two answer.',
                     'Three answer.',
-                ]
+                ],
             },
             format='json'
         )
@@ -170,7 +170,7 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
                 'type': Question.ONE_OPTION,
                 'answers': [
                     'Only one variant.',
-                ]
+                ],
             },
             format='json'
         )
@@ -178,6 +178,20 @@ class TopicTestCase(AuthAPITestCase, URLPatternsTestCase):
         answers = response.data.get('answers')
         assert isinstance(answers, list)
         assert (len(answers) == 1)
+
+        answer_1_id = answers[0].get('id')
+        assert answer_1_id is not None
+
+        response = self.client.post(
+            reverse('users-answers:users-answers-list'),
+            data={
+                'user_id': 666,
+                'question_id': question_1_id,
+                'answer_id': answer_1_id,
+            },
+            format='json'
+        )
+        assert (response.status_code == 200)
 
         response = self.client.delete(reverse('questions:questions-detail', args=[question_1_id]))
         assert (response.status_code == 200)
