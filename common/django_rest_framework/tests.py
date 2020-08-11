@@ -4,13 +4,23 @@ from rest_framework.test import APITestCase, APIClient
 
 
 class AuthAPITestCase(APITestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.client = APIClient()
+        cls.user = User.objects.create_superuser('admin', 'admin@mail.com', 'passwd123')
+        cls.token = Token.objects.create(user=cls.user)
+        cls.storage = dict()
+
     def setUp(self) -> None:
-        self.client = APIClient()
-        self.user = User.objects.create_superuser('admin', 'admin@mail.com', 'passwd123')
-        self.token = Token.objects.create(user=self.user)
+        pass
 
-    def authenticate(self):
-        self.client.force_authenticate(user=self.user, token=self.token)
+    @staticmethod
+    def authenticate(test_func):
+        def func(instance):
+            instance.client.force_authenticate(user=instance.user, token=instance.token)
+            test_func(instance)
+            instance.client.force_authenticate(user=None, token=None)
 
-    def unauthenticate(self):
-        self.client.force_authenticate(user=None, token=None)
+        return func
