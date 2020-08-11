@@ -1,23 +1,18 @@
 from django.test import tag
-from django.urls import include, path, reverse
-from rest_framework.test import URLPatternsTestCase
+from django.urls import reverse
 
 from common.django_rest_framework.tests import AuthAPITestCase
 from interview.apps.questions.models import Question
 
 
 @tag('api')
-class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
-
-    urlpatterns = [
-        path(r'topics/', include('interview.apps.topics.urls')),
-        path(r'questions/', include('interview.apps.questions.urls')),
-        path(r'answers/', include('interview.apps.answers.urls')),
-        path(r'users-answers/', include('interview.apps.users_answers.urls')),
-    ]
+class LineFlowTestCase(AuthAPITestCase):
 
     @AuthAPITestCase.authenticate
-    def test_001_create_1_topic(self):
+    def test(self):
+    # TODO: database roll back after finished test, but need save her state.
+    # @AuthAPITestCase.authenticate
+    # def test_001_create_1_topic(self):
         response = self.client.post(
             reverse('topics:topics-list'),
             data={
@@ -34,8 +29,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert topic_1_id is not None
         self.storage.update({'topic_1_id': topic_1_id})
 
-    @AuthAPITestCase.authenticate
-    def test_002_create_2_topic(self):
+    # @AuthAPITestCase.authenticate
+    # def test_002_create_2_topic(self):
         response = self.client.post(
             reverse('topics:topics-list'),
             data={
@@ -52,15 +47,15 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert topic_2_id is not None
         self.storage.update({'topic_2_id': topic_2_id})
 
-    @AuthAPITestCase.authenticate
-    def test_003_get_2_topics(self):
+    # @AuthAPITestCase.authenticate
+    # def test_003_get_2_topics(self):
         response = self.client.get(reverse('topics:topics-list'))
         assert (response.status_code == 200)
         assert isinstance(response.data, list)
         assert (len(response.data) == 2)
 
-    @AuthAPITestCase.authenticate
-    def test_004_update_1_topic_field(self):
+    # @AuthAPITestCase.authenticate
+    # def test_004_update_1_topic_field(self):
         topic_1_id = self.storage.get('topic_1_id', None)
         assert topic_1_id is not None
 
@@ -81,8 +76,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert isinstance(response.data, dict)
         assert (response.data.get('description') == value_update_field)
 
-    @AuthAPITestCase.authenticate
-    def test_005_catch_exception_update_topic_field(self):
+    # @AuthAPITestCase.authenticate
+    # def test_005_catch_exception_update_topic_field(self):
         topic_1_id = self.storage.get('topic_1_id', None)
         assert topic_1_id is not None
 
@@ -95,8 +90,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         )
         assert (response.status_code == 400)
 
-    @AuthAPITestCase.authenticate
-    def test_006_delete_1_topic_from_2(self):
+    # @AuthAPITestCase.authenticate
+    # def test_006_delete_1_topic_from_2(self):
         topic_2_id = self.storage.get('topic_2_id', None)
         assert topic_2_id is not None
 
@@ -108,8 +103,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert isinstance(response.data, list)
         assert (len(response.data) == 1)
 
-    @AuthAPITestCase.authenticate
-    def test_007_create_question_with_answers(self):
+    # @AuthAPITestCase.authenticate
+    # def test_007_create_question_with_answers(self):
         topic_1_id = self.storage.get('topic_1_id', None)
         assert topic_1_id is not None
 
@@ -133,8 +128,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert question_1_id is not None
         self.storage.update({'question_1_id': question_1_id})
 
-    @AuthAPITestCase.authenticate
-    def test_008_catch_exception_create_questions(self):
+    # @AuthAPITestCase.authenticate
+    # def test_008_catch_exception_create_questions(self):
         topic_1_id = self.storage.get('topic_1_id', None)
         assert topic_1_id is not None
 
@@ -166,8 +161,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         )
         assert (response.status_code == 400)
 
-    @AuthAPITestCase.authenticate
-    def test_009_update_question(self):
+    # @AuthAPITestCase.authenticate
+    # def test_009_update_question(self):
         question_1_id = self.storage.get('question_1_id', None)
         assert question_1_id is not None
 
@@ -220,8 +215,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         assert answer_1_id is not None
         self.storage.update({'answer_1_id': answer_1_id})
 
-    @AuthAPITestCase.authenticate
-    def test_010_create_user_answer(self):
+    # @AuthAPITestCase.authenticate
+    # def test_010_create_user_answer(self):
         question_1_id = self.storage.get('question_1_id', None)
         answer_1_id = self.storage.get('answer_1_id', None)
         assert question_1_id is not None
@@ -238,8 +233,8 @@ class LineFlowTestCase(AuthAPITestCase, URLPatternsTestCase):
         )
         assert (response.status_code == 200)
 
-    @AuthAPITestCase.authenticate
-    def test_011_delete_question(self):
+    # @AuthAPITestCase.authenticate
+    # def test_011_delete_question(self):
         question_1_id = self.storage.get('question_1_id', None)
         assert question_1_id is not None
 
