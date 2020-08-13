@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 django = "==2.2.13"
 djangorestframework = "*"
+factory-boy = "*"
 
 [requires]
 python_version = "3.8"
