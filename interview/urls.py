@@ -17,10 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken import views
 
+from interview.apps.topics.views import get_users_topics
+
 urlpatterns = [
     path(r'admin/', admin.site.urls),
     path(r'auth-token/', views.obtain_auth_token),
     path(r'topics/', include('interview.apps.topics.urls')),
     path(r'questions/', include('interview.apps.questions.urls')),
+    path(r'users-topics/', get_users_topics, name='users-topics-list'),
     path(r'users-answers/', include('interview.apps.users_answers.urls')),
 ]

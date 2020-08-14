@@ -1,3 +1,5 @@
+from enum import Enum
+
 from django.db.models import ProtectedError
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -50,6 +52,16 @@ class TopicViewSet(ViewSet):
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
+class UserTopicType(Enum):
+    ACTIVE = 'active'
+    PASSED = 'passed'
+
+
 @api_view(['GET'])
 def get_users_topics(request):
+    """
+    Get Topics for user. Filtering by user_id, type.
+    :param request: contain query params - user_id, type = [active, passed]
+    :return: topics list.
+    """
     pass
