@@ -403,4 +403,4 @@ class UserApiFlowTestCase(AuthApiTestCase, DatabaseFilling, TopicHelper):
         questions = user_passed_topics[0].get('questions', None)
         assert_list(questions)
         passed_question = next(iter(filter(lambda question: question.get('id', None) == question_id, questions)))
-        # TODO: check answer from passed question
+        assert (answer_id == passed_question.get('answer_id', None))

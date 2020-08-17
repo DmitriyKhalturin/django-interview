@@ -12,6 +12,7 @@ from rest_framework.viewsets import ViewSet
 
 from interview.apps.questions.models import Question
 from interview.apps.topics.models import Topic, TopicSerializer
+from interview.apps.users_answers.models import UserAnswer
 
 
 class TopicViewSet(ViewSet):
@@ -121,7 +122,31 @@ def get_users_topics(request):
                 id__in=topics_ids
             )
 
+        users_answers = UserAnswer.objects.filter(
+            user_id=user_id
+        ).values_list(
+            'question_id', 'answer_id'
+        )
+        answers_on_questions = {key: value for key, value in users_answers}
+
         topics_serializer = TopicSerializer(topics, many=True)
-        return Response(topics_serializer.data, status=status.HTTP_200_OK)
+        topics = topics_serializer.data
+
+        topics = set_users_answers_to_questions(topics, answers_on_questions)
+
+        return Response(topics, status=status.HTTP_200_OK)
     except AssertionError:
         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+def set_users_answers_to_questions(topics: list, answers_on_questions: dict) -> list:
+    if len(answers_on_questions) > 0 and len(topics) > 0:
+        for topic in topics:
+            questions = topic.get('questions', [])
+            for question in questions:
+                answer_id = answers_on_questions.pop(question['id'], None)
+                if answer_id is not None:
+                    question['answer_id'] = answer_id
+                if len(answers_on_questions) == 0:
+                    return topics
+    return topics
