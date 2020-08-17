@@ -16,10 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken import views
+from rest_framework_swagger.views import get_swagger_view
 
 from interview.apps.topics.views import get_users_topics
 
+schema_view = get_swagger_view(title='API')
 urlpatterns = [
+    path(r'', schema_view),
     path(r'admin/', admin.site.urls),
     path(r'auth-token/', views.obtain_auth_token),
     path(r'topics/', include('interview.apps.topics.urls')),

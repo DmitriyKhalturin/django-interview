@@ -9,6 +9,7 @@ verify_ssl = true
 django = "==2.2.13"
 djangorestframework = "*"
 factory-boy = "*"
+django-rest-swagger = "*"
 
 [requires]
 python_version = "3.8"
