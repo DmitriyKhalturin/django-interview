@@ -15,18 +15,27 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
 from rest_framework.authtoken import views
-from rest_framework_swagger.views import get_swagger_view
 
 from interview.apps.topics.views import get_users_topics
 
-schema_view = get_swagger_view(title='API')
+schema_view = get_schema_view(
+   openapi.Info(
+      title="Interview API",
+      default_version='v1'
+   ),
+   public=True,
+   permission_classes=(permissions.AllowAny,),
+)
 urlpatterns = [
-    path(r'', schema_view),
     path(r'admin/', admin.site.urls),
     path(r'auth-token/', views.obtain_auth_token),
     path(r'topics/', include('interview.apps.topics.urls')),
     path(r'questions/', include('interview.apps.questions.urls')),
     path(r'users-topics/', get_users_topics, name='users-topics-list'),
     path(r'users-answers/', include('interview.apps.users_answers.urls')),
+    path(r'swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

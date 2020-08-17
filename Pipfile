@@ -9,7 +9,7 @@ verify_ssl = true
 django = "*"
 djangorestframework = "*"
 factory-boy = "*"
-django-rest-swagger = "*"
+drf-yasg = "*"
 
 [requires]
 python_version = "3.8"
