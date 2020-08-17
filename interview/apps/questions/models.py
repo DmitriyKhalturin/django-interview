@@ -2,10 +2,12 @@ from django.db import models
 from rest_framework import serializers
 from rest_framework.fields import empty
 
+from common.transform import trunc_to8char
 from interview.apps.topics.models import Topic
 
 
 class Question(models.Model):
+
     # TODO: use TextChoices for Django > 3.0
     CUSTOM_OPTION = 'custom'
     ONE_OPTION = 'one'
@@ -22,9 +24,27 @@ class Question(models.Model):
     type = models.CharField(max_length=8, choices=TYPE_OPTION)
     topic = models.ForeignKey(to=Topic, related_name='questions', on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = "questions"
+
     @classmethod
     def is_enumerate_type(cls, type_option):
         return type_option in {Question.ONE_OPTION, Question.MULTIPLE_OPTION}
+
+    def __str__(self):
+        return "%s [" \
+               "id: %s, " \
+               "text: %s, " \
+               "type: %s, " \
+               "topic_id: %s, " \
+               "]" %\
+               (
+                   self.__class__.__name__,
+                   self.id,
+                   trunc_to8char(self.text),
+                   self.type,
+                   self.topic_id,
+               )
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -38,6 +58,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 
 class InsertQuestionSerializer(serializers.Serializer):
+
     text = serializers.CharField(max_length=1024)
     type = serializers.CharField(max_length=8)
     answers = serializers.ListField(

@@ -13,7 +13,8 @@ class QuestionViewSet(ViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminUser,)
 
-    def create(self, request):
+    @staticmethod
+    def create(request):
         question_serializer = InsertQuestionSerializer(data=request.data)
         if question_serializer.is_valid():
             question = question_serializer.save()
@@ -21,7 +22,8 @@ class QuestionViewSet(ViewSet):
         else:
             return Response(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def update(self, request, pk):
+    @staticmethod
+    def update(request, pk):
         question = get_object_or_404(Question, pk=pk)
         question_serializer = InsertQuestionSerializer(question, data=request.data, partial=True)
         if question_serializer.is_valid():
@@ -30,7 +32,8 @@ class QuestionViewSet(ViewSet):
         else:
             return Response(question_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk):
+    @staticmethod
+    def destroy(request, pk):
         try:
             question = get_object_or_404(Question, pk=pk)
             question.delete()

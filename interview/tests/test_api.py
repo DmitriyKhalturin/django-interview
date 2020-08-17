@@ -91,7 +91,7 @@ class TopicHelper(object):
         :return: values from topic object.
         """
         return self._get_topics(
-            lambda topics: list(filter(lambda topic: topic.get('id', None) == topic_id, topics))[0],
+            lambda topics: next(iter(filter(lambda topic: topic.get('id', None) == topic_id, topics))),
             keys
         )
 
@@ -99,7 +99,7 @@ class TopicHelper(object):
         response = self.client.get(
             reverse('users-topics-list'),
             data={
-                'type': (UserTopicType.ACTIVE.value if is_active_not_passed else UserTopicType.ACTIVE.value),
+                'type': (UserTopicType.ACTIVE.value if is_active_not_passed else UserTopicType.PASSED.value),
                 'user_id': user_id,
             }
         )
@@ -355,10 +355,10 @@ class UserApiFlowTestCase(AuthApiTestCase, DatabaseFilling, TopicHelper):
         assert (user_active_topics_count == len(self._get_users_topics(self.user_id, is_active_not_passed=True)))
 
     @staticmethod
-    def __get_question_ans_answer_ids(question) -> tuple:
+    def __get_question_and_answer_ids(question, is_reversed_answers=False) -> tuple:
         answers = question.get('answers')
         assert_list(answers)
-        answer = answers[0]
+        answer = (list(reversed(answers))[0] if is_reversed_answers else answers[0])
         assert isinstance(answer, dict)
 
         question_id = question.get('id', None)
@@ -390,7 +390,17 @@ class UserApiFlowTestCase(AuthApiTestCase, DatabaseFilling, TopicHelper):
         questions = first_topic.get('questions', None)
         assert_list(questions)
 
-        for args in map(self.__get_question_ans_answer_ids, questions):
+        for args in map(self.__get_question_and_answer_ids, questions):
             self.__pass_question(*args)
 
-        assert (user_passed_topics_count < len(self._get_users_topics(self.user_id, is_active_not_passed=False)))
+        question_id, answer_id = self.__get_question_and_answer_ids(questions[0], is_reversed_answers=True)
+        self.__pass_question(question_id=question_id, answer_id=answer_id)
+
+        user_passed_topics = self._get_users_topics(self.user_id, is_active_not_passed=False)
+        assert_list(user_passed_topics)
+        assert (user_passed_topics_count + 1 == len(user_passed_topics))
+
+        questions = user_passed_topics[0].get('questions', None)
+        assert_list(questions)
+        passed_question = next(iter(filter(lambda question: question.get('id', None) == question_id, questions)))
+        # TODO: check answer from passed question

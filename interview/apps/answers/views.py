@@ -13,7 +13,8 @@ class AnswerViewSet(ViewSet):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (IsAdminUser,)
 
-    def update(self, request, pk):
+    @staticmethod
+    def update(request, pk):
         answer = get_object_or_404(Answer, pk=pk)
         answer_serializer = AnswerSerializer(answer, data=request.data, partial=True)
         if answer_serializer.is_valid():
@@ -22,7 +23,8 @@ class AnswerViewSet(ViewSet):
         else:
             return Response(answer_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def destroy(self, request, pk):
+    @staticmethod
+    def destroy(request, pk):
         try:
             answer = get_object_or_404(Answer, pk=pk)
             answer.delete()
